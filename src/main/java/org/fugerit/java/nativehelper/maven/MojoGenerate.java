@@ -1,23 +1,20 @@
 package org.fugerit.java.nativehelper.maven;
 
-import java.io.File;
-import java.net.URL;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
-
-import org.apache.maven.model.Resource;
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.annotations.ResolutionScope;
-import org.apache.maven.project.MavenProject;
-import org.codehaus.mojo.jaxb2.shared.FileSystemUtilities;
-import org.fugerit.java.core.io.FileIO;
-import org.fugerit.java.nativehelper.tool.AccessingAllClassesInPackage;
+import org.fugerit.java.core.cfg.ConfigRuntimeException;
+import org.fugerit.java.core.lang.helpers.StringUtils;
+import org.fugerit.java.nhg.config.NativeHelperFacade;
+import org.fugerit.java.nhg.config.model.NativeHelperConfig;
+
+import java.io.File;
+import java.io.FileWriter;
 
 @Mojo( 
 		name = "generate",
@@ -25,104 +22,46 @@ import org.fugerit.java.nativehelper.tool.AccessingAllClassesInPackage;
 		defaultPhase = LifecyclePhase.COMPILE,
 		requiresDependencyResolution = ResolutionScope.COMPILE_PLUS_RUNTIME
 )
-public class MojoGenerate extends AbstractCodegenMojo {
+public class MojoGenerate extends AbstractMojo {
 	
-	public static final String PARAM_NATIVE_HELPER_CONFIG = "nativeHelperConfig";
+	public static final String PARAM_NATIVE_HELPER_CONFIG_PATH = "nativeHelperConfigPath";
 	
-    @Parameter(property = PARAM_NATIVE_HELPER_CONFIG, required = true )
-    private String nativeHelperConfig;
+    @Parameter(property = PARAM_NATIVE_HELPER_CONFIG_PATH, required = true )
+    @Getter @Setter
+    private String nativeHelperConfigPath;
     
-	public static final String PARAM_OUTPUT_DIR = "outputDirectory";
+	public static final String PARAM_REFLECT_CONFIG_JSON_OUTPUT_PATH = "reflectConfigJsonOutputPath";
 	
-    @Parameter(property = PARAM_OUTPUT_DIR, required = true )
-    private String outputDirectory;
-    
-    /**
-     * The injected Maven project.
-     */
-    @Parameter(defaultValue = "${project}", readonly = true)
-    private MavenProject project;
-     
+    @Parameter(property = PARAM_REFLECT_CONFIG_JSON_OUTPUT_PATH, required = true )
+    @Getter @Setter
+    private String reflectConfigJsonOutputPath;
+
     public void execute() throws MojoExecutionException {
-    	getLog().info( "using parameter "+PARAM_NATIVE_HELPER_CONFIG+" : "+this.nativeHelperConfig );
-    	getLog().info( "using parameter "+PARAM_OUTPUT_DIR+" : "+this.outputDirectory );
-        File file = new File( this.nativeHelperConfig );
+    	getLog().info( "using parameter "+PARAM_NATIVE_HELPER_CONFIG_PATH+" : "+this.nativeHelperConfigPath );
+    	getLog().info( "using parameter "+PARAM_REFLECT_CONFIG_JSON_OUTPUT_PATH+" : "+this.reflectConfigJsonOutputPath );
         try {
-        	String packageName = "org.fugerit.java.doc.base.model";
-        	getLog().info( "daogen config path : "+file.getCanonicalPath() );
-        	AccessingAllClassesInPackage helper = new AccessingAllClassesInPackage();
-        	Set<Class<?>> classNames = helper.findAllClassesUsingClassLoader(packageName);
-        	getLog().info( "List : "+classNames );
-        	File outputFolder = new File( this.outputDirectory );
-        	getLog().info( "create output dir : "+outputFolder.getCanonicalPath()+" : "+outputFolder.mkdirs() );
-        	getLog().info( "exists output dir : "+outputFolder.exists()+" , parent exists : "+outputFolder.getParentFile().exists() );
-        	File nativeImageFolder = new File( outputFolder, "META-INF/native-image" );
-        	nativeImageFolder.mkdirs();
-        	FileIO.writeString( "{}" , new File( nativeImageFolder, "reflect-config.json" ) );
-        	FileIO.writeString( "{}" , new File( nativeImageFolder, "resource-config.json" ) );
-        	//this.addGeneratedSourcesToProjectSourceRoot();
-        	final Resource outputDirectoryResource = new Resource();
-        	this.getLog().info( "resourse path : "+this.getOutputDirectory().getCanonicalPath() );
-        	outputDirectoryResource.setDirectory( this.getOutputDirectory().getCanonicalPath() );
-        	outputDirectoryResource.setIncludes(Collections.singletonList("**/*.json"));
-        	this.addResource( outputDirectoryResource );
+            File nativeHelperConfigFile = new File( this.nativeHelperConfigPath );
+            if ( nativeHelperConfigFile.exists() ) {
+                NativeHelperConfig config = NativeHelperFacade.loadConfig( this.nativeHelperConfigPath );
+                String reflectConfigJsonPath = StringUtils.valueWithDefault( this.reflectConfigJsonOutputPath, config.getReflectConfigJsonOutputPath() );
+                if (StringUtils.isNotEmpty( reflectConfigJsonPath ) ) {
+                    File reflectConfigJsonFile = new File( reflectConfigJsonPath );
+                    if ( config.isCreateParentDirectory() ) {
+                        getLog().info( String.format( "Create parent directory : %s -> %s", reflectConfigJsonFile.getParentFile(), reflectConfigJsonFile.getParentFile().mkdirs() ) );
+                    }
+                    try (FileWriter writer = new FileWriter( reflectConfigJsonFile ) ) {
+                        NativeHelperFacade.generate( config, writer );
+                    }
+                } else {
+                    throw new ConfigRuntimeException( String.format( "param %s not set", PARAM_REFLECT_CONFIG_JSON_OUTPUT_PATH ) );
+                }
+            } else {
+                throw new ConfigRuntimeException( String.format( "%s does not exist : %s", PARAM_NATIVE_HELPER_CONFIG_PATH, nativeHelperConfigFile.getCanonicalPath() ) );
+            }
         } catch (Exception e) {
-        	e.printStackTrace();
+        	getLog().error( "Error generating configuration : "+e, e );
         	throw new MojoExecutionException( "Error generating code : "+e, e );
         }
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    protected void addGeneratedSourcesToProjectSourceRoot() {
-        getProject().addCompileSourceRoot(FileSystemUtilities.getCanonicalPath(getOutputDirectory()));
-    }
-    
-	@Override
-	protected void addResource(Resource resource) {
-		getProject().addResource(resource);
-	}
-
-	@Override
-	protected boolean shouldExecutionBeSkipped() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	protected boolean isReGenerationRequired() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	protected boolean performExecution() throws MojoExecutionException, MojoFailureException {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	protected List<URL> getSources() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	protected File getOutputDirectory() {
-		return new File( this.outputDirectory );
-	}
-
-	@Override
-	protected List<String> getClasspath() throws MojoExecutionException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	protected String getStaleFileName() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 }

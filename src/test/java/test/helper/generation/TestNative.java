@@ -1,17 +1,15 @@
 package test.helper.generation;
 
 
-import static org.junit.Assert.fail;
+import lombok.extern.slf4j.Slf4j;
+import org.fugerit.java.nativehelper.tool.AccessingAllClassesInPackage;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
-
-import org.fugerit.java.nativehelper.tool.AccessingAllClassesInPackage;
-import org.junit.Test;
-
-import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class TestNative {
@@ -45,7 +43,7 @@ public class TestNative {
 			}
 			log.info( "buffer : \n{}", sb.toString() );
 		} catch (Exception e) {
-			fail( "Error : "+e ); 
+			Assertions.fail( "Error : "+e );
 		}
 		
 	}

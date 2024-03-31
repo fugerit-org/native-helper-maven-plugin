@@ -21,6 +21,7 @@
 	<properties>
 		<maven.compiler.release>11</maven.compiler.release>
 		<fj-core-version>8.5.3</fj-core-version>
+		<native-helper-graalvm-version>1.3.0</native-helper-graalvm-version>
 	</properties>
 	
 	<licenses>
@@ -49,12 +50,6 @@
 	<dependencies>
 
 		<dependency>
-		    <groupId>org.apache.maven</groupId>
-		    <artifactId>maven-core</artifactId>
-		    <version>3.9.3</version>
-		</dependency>
-
-		<dependency>
 			<groupId>org.apache.maven</groupId>
 			<artifactId>maven-plugin-api</artifactId>
 		</dependency>
@@ -64,22 +59,16 @@
 			<artifactId>maven-plugin-annotations</artifactId>
 		</dependency>
 
+		<dependency>
+			<groupId>org.fugerit.java</groupId>
+			<artifactId>native-helper-graalvm</artifactId>
+			<version>${native-helper-graalvm-version}</version>
+		</dependency>
+
 		<dependency> 
 		  <groupId>org.fugerit.java</groupId>
 		  <artifactId>fj-core</artifactId>
 		  <version>${fj-core-version}</version>
-		</dependency>
-		
-		<dependency>
-		    <groupId>org.apache.maven</groupId>
-		    <artifactId>maven-project</artifactId>
-		    <version>2.2.1</version>
-		</dependency>
-		
-		<dependency>
-			<groupId>org.codehaus.mojo</groupId>
-			<artifactId>jaxb2-maven-plugin</artifactId>
-			<version>3.1.0</version>
 		</dependency>
 
 		<dependency> 
@@ -111,8 +100,8 @@
 		</dependency>
 
 		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter</artifactId>
 			<scope>test</scope>
 		</dependency>
 
