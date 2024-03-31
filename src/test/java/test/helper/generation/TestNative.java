@@ -12,11 +12,11 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Slf4j
-public class TestNative {
+class TestNative {
 
 		
 	@Test
-	public void testReflectConfig() {
+	void testReflectConfig() {
 		try {
 			AccessingAllClassesInPackage helper = new AccessingAllClassesInPackage();
 			Set<Class<?>> set = helper.findAllClassesUsingClassLoader( "test.helper.generation.model" );
