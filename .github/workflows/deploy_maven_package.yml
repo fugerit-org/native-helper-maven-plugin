@@ -1,0 +1,38 @@
+# CI deploy maven package
+#
+# version 1.0.0
+#
+# see : https://universe.fugerit.org/src/docs/conventions/workflows/deploy_maven_package.html
+
+name: CI deploy maven package 
+
+on:
+  push:
+    branches:
+    - branch-deploy
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@main
+    - name: Set up JDK 17
+      uses: actions/setup-java@main
+      with:
+        java-version: '17'
+        distribution: 'corretto'
+        cache: maven
+        server-id: ossrh
+        server-username: MAVEN_USERNAME
+        server-password: MAVEN_PASSWORD
+    - name: Import gpg
+      run: echo -e "${{ secrets.PASSPHRASE }}" | echo -e "${{ secrets.GPG_PRIVATE_KEY }}" | gpg --allow-secret-key-import --import
+    - name: Build package
+      run: mvn clean install -P full,coverage,metadata
+    - name: Publish package
+      run: mvn --batch-mode deploy -P doRelease
+      env:
+        MAVEN_USERNAME: ${{ secrets.OSS_USERNAME }}
+        MAVEN_PASSWORD: ${{ secrets.OSS_PASSWORD }}
