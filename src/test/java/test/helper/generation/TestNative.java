@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.fugerit.java.nativehelper.tool.AccessingAllClassesInPackage;
 import org.junit.Test;
 
 import lombok.extern.slf4j.Slf4j;
