@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.3.4] - 2024-04-01
+
+### Changed
+
+- [native-helper-graalvm](https://github.com/fugerit-org/native-helper-graalvm/) version set to 1.3.3
+
+### Fixed
+
+- Generation based on packageName
+
 ## [1.3.3] - 2024-04-01
 
 ### Changed
