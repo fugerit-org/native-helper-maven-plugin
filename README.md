@@ -28,10 +28,10 @@ Add the plugin to your maven project :
     <version>${native-helper-maven-plugin-version}</version>
     <executions>
         <execution>
-            <id>nativeHelper</id>
+            <id>generate-native-configuration</id>
             <phase>prepare-package</phase>
             <goals>
-                <goal>generate</goal>
+                <goal>nativeHelper</goal>
             </goals>
         </execution>
     </executions>
