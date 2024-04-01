@@ -41,13 +41,23 @@ class TestMojoGenerate {
                     }
                 };
             }
-
             @Override
             public List<String> getCompileClasspathElements() throws DependencyResolutionRequiredException {
                 return Arrays.asList( new File( this.getBuild().getOutputDirectory(),"classes" ).getAbsolutePath() );
             }
         } );
         mojo.setNativeHelperConfigPath( "src/test/resources/tool/config/native-helper-config.yaml" );
+        mojo.setReflectConfigJsonOutputPath( file.getCanonicalPath() );
+        mojo.execute();
+        Assertions.assertTrue( file.exists() );
+    }
+
+    @Test
+    void test3() throws MojoExecutionException, IOException {
+        MojoGenerate mojo = new MojoGenerate();
+        File file = new File( "target/reflect-config-check.json" );
+        file.delete();
+        mojo.setNativeHelperConfigPath( "src/test/resources/tool/config/native-helper-config-no-mkdirs.yaml" );
         mojo.setReflectConfigJsonOutputPath( file.getCanonicalPath() );
         mojo.execute();
         Assertions.assertTrue( file.exists() );

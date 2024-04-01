@@ -1,0 +1,18 @@
+# native-helper-graalvm generation configuration
+---
+reflectConfigJsonOutputPath: target/main-test/native-image/reflect-config-alt.json
+generate:
+  - className: org.fugerit.java.nhg.reflect.config.Entry
+    mode: getters
+  - className: org.fugerit.java.nhg.reflect.config.EntryCondition
+    mode: getters
+  - className: org.fugerit.java.nhg.reflect.config.EntryField
+    mode: getters
+  - className: org.fugerit.java.nhg.reflect.config.EntryMethod
+    mode: getters
+  - className: org.fugerit.java.nhg.config.model.NativeHelperConfig
+    mode: getters_setters
+    typeReachable: org.fugerit.java.nhg.config.NativeHelperFacade
+  - className: org.fugerit.java.nhg.config.model.GenerateConfig
+    mode: getters_setters
+    typeReachable: org.fugerit.java.nhg.config.NativeHelperFacade

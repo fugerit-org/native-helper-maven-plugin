@@ -61,7 +61,7 @@ public class MojoGenerate extends AbstractMojo {
      * https://medium.com/@viqueen/building-a-maven-plugin-to-explore-your-code-base-fe309ce56eb6
      */
     private void setupClassLoader() throws DependencyResolutionRequiredException, IOException {
-        if ( this.project != null ) {
+        if ( this.getProject() != null ) {
             final Set<URI> urls = new LinkedHashSet<>();
             // get the project's compile classpath elements
             // and turn them into URLs
@@ -79,14 +79,14 @@ public class MojoGenerate extends AbstractMojo {
     }
 
     public void execute() throws MojoExecutionException {
-    	getLog().info( "using parameter "+PARAM_NATIVE_HELPER_CONFIG_PATH+" : "+this.nativeHelperConfigPath );
-    	getLog().info( "using parameter "+PARAM_REFLECT_CONFIG_JSON_OUTPUT_PATH+" : "+this.reflectConfigJsonOutputPath );
+    	getLog().info( "using parameter "+PARAM_NATIVE_HELPER_CONFIG_PATH+" : "+this.getNativeHelperConfigPath() );
+    	getLog().info( "using parameter "+PARAM_REFLECT_CONFIG_JSON_OUTPUT_PATH+" : "+this.getReflectConfigJsonOutputPath() );
         try {
             this.setupClassLoader();
-            File nativeHelperConfigFile = new File( this.nativeHelperConfigPath );
+            File nativeHelperConfigFile = new File( this.getNativeHelperConfigPath() );
             if ( nativeHelperConfigFile.exists() ) {
-                NativeHelperConfig config = NativeHelperFacade.loadConfig( this.nativeHelperConfigPath );
-                String reflectConfigJsonPath = StringUtils.valueWithDefault( this.reflectConfigJsonOutputPath, config.getReflectConfigJsonOutputPath() );
+                NativeHelperConfig config = NativeHelperFacade.loadConfig( this.getNativeHelperConfigPath() );
+                String reflectConfigJsonPath = StringUtils.valueWithDefault( this.getReflectConfigJsonOutputPath(), config.getReflectConfigJsonOutputPath() );
                 if (StringUtils.isNotEmpty( reflectConfigJsonPath ) ) {
                     File reflectConfigJsonFile = new File( reflectConfigJsonPath );
                     if ( config.isCreateParentDirectory() ) {
