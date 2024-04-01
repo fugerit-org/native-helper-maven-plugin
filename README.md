@@ -17,12 +17,10 @@ Maven plugin with helper methods for generating native configuration
 This maven plugin allows generation of [graalvm](https://www.graalvm.org/) metadata 
 using the [native-helper-graalvm](https://github.com/fugerit-org/native-helper-graalvm)
 
-## Quickstart
+## 1. mojo 'generate'
 
 Write a *native-helper-config.yaml* configuration file for the project.
 ([configuration reference here](https://github.com/fugerit-org/native-helper-graalvm))
-
-Add the plugin to your maven project : 
 
 ```xml
 <plugin>
@@ -34,26 +32,64 @@ Add the plugin to your maven project :
             <id>generate-native-configuration</id>
             <phase>prepare-package</phase>
             <goals>
-                <goal>nativeHelper</goal>
+                <goal>generate</goal>
             </goals>
+            <configuration>
+                <nativeHelperConfigPath>src/main/config/native-helper-config.yaml</nativeHelperConfigPath>
+                <reflectConfigJsonOutputPath>${project.build.directory}/generated-resources/reflect-config-demo.json</reflectConfigJsonOutputPath>
+                <warnOnError>true</warnOnError>
+            </configuration>
         </execution>
     </executions>
-    <configuration>
-        <nativeHelperConfigPath>src/main/config/native-helper-config.yaml</nativeHelperConfigPath>
-        <reflectConfigJsonOutputPath>${project.build.outputDirectory}/META-INF/native-image/reflect-config.json</reflectConfigJsonOutputPath>
-        <warnOnError>false</warnOnError>
-    </configuration>
 </plugin>
 ```
 
-## Configuration reference
+### mojo 'generate' configuration reference
 
 | name                        | default | required | type      | description                                                                   |
 |-----------------------------|---------|----------|-----------|-------------------------------------------------------------------------------|
 | nativeHelperConfigPath      | *none*  | *true*   | *string*  | Path to *native-helper-config.yaml* configuration file                        |
 | reflectConfigJsonOutputPath | *none*  | *false*  | *string*  | generation path for *reflect-config.json* file                                |
+| createParentDirectory       | *false* | *false*  | *boolean* | if set to *true* will create *reflectConfigJsonOutputPath* parent folder      |
 | warnOnError                 | *false* | *false*  | *boolean* | if set to *true* exception will be logged instead of generating a build error |
 
-## Demo project
+## 2. mojo 'merge'
+
+```xml
+<plugin>
+    <groupId>org.fugerit.java</groupId>
+    <artifactId>native-helper-maven-plugin</artifactId>
+    <version>${native-helper-maven-plugin-version}</version>
+    <executions>
+        <execution>
+            <id>merge-native-configuration</id>
+            <phase>prepare-package</phase>
+            <goals>
+                <goal>merge</goal>
+            </goals>
+            <configuration>
+                <reflectConfigJsonFiles>
+                    <reflectConfigJsonFile>${project.build.directory}/generated-resources/reflect-config-demo.json</reflectConfigJsonFile>
+                    <reflectConfigJsonFile>${project.basedir}/src/main/config/reflect-config-nhg.json</reflectConfigJsonFile>
+                </reflectConfigJsonFiles>
+                <reflectConfigJsonOutputPath>${project.build.outputDirectory}/META-INF/native-image/reflect-config.json</reflectConfigJsonOutputPath>
+                <createParentDirectory>true</createParentDirectory>
+                <warnOnError>true</warnOnError>
+            </configuration>
+        </execution>
+    </executions>
+</plugin>
+```
+
+### mojo 'merge' configuration reference
+
+| name                                         | default | required | type      | description                                                                   |
+|----------------------------------------------|---------|----------|-----------|-------------------------------------------------------------------------------|
+| reflectConfigJsonFiles.reflectConfigJsonFile | *none*  | *true*   | *string*  | List of *reflect-config.json* files to merge                                  |
+| reflectConfigJsonOutputPath                  | *none*  | *true*   | *string*  | generation path for *reflect-config.json* file                                |
+| createParentDirectory                        | *false* | *false*  | *boolean* | if set to *true* will create *reflectConfigJsonOutputPath* parent folder      |
+| warnOnError                                  | *false* | *false*  | *boolean* | if set to *true* exception will be logged instead of generating a build error |
+
+## 3. Demo project
 
 Here is a [simple demo project](https://github.com/caffetteria/native-metadata-demo)

@@ -7,11 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- 'merge' mojo
+
+### Changed
+
+- 'nativeHelper' to 'generate' mojo
+- [native-helper-graalvm](https://github.com/fugerit-org/native-helper-graalvm/) version set to 1.3.5
+
 ## [1.3.4] - 2024-04-01
 
 ### Changed
 
-- [native-helper-graalvm](https://github.com/fugerit-org/native-helper-graalvm/) version set to 1.3.3
+- [native-helper-graalvm](https://github.com/fugerit-org/native-helper-graalvm/) version set to 1.3.4
 
 ### Fixed
 

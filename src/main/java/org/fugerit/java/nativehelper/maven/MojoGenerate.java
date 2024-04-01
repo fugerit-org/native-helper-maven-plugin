@@ -3,13 +3,12 @@ package org.fugerit.java.nativehelper.maven;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.maven.artifact.DependencyResolutionRequiredException;
-import org.apache.maven.plugin.AbstractMojo;
-import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.annotations.ResolutionScope;
 import org.apache.maven.project.MavenProject;
+import org.fugerit.java.core.cfg.ConfigException;
 import org.fugerit.java.core.cfg.ConfigRuntimeException;
 import org.fugerit.java.core.function.SafeFunction;
 import org.fugerit.java.core.lang.helpers.StringUtils;
@@ -27,30 +26,19 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Mojo( 
-		name = "nativeHelper",
+		name = "generate",
 		threadSafe = true,
 		defaultPhase = LifecyclePhase.PREPARE_PACKAGE,
 		requiresDependencyResolution = ResolutionScope.COMPILE_PLUS_RUNTIME
 )
-public class MojoGenerate extends AbstractMojo {
+public class MojoGenerate extends NativeHelperMojoBase {
 	
 	public static final String PARAM_NATIVE_HELPER_CONFIG_PATH = "nativeHelperConfigPath";
-
-    public static final String PARAM_REFLECT_CONFIG_JSON_OUTPUT_PATH = "reflectConfigJsonOutputPath";
-
-    public static final String PARAM_WARN_ON_ERROR = "warnOnError";
 
     @Parameter(property = PARAM_NATIVE_HELPER_CONFIG_PATH, required = true )
     @Getter @Setter
     private String nativeHelperConfigPath;
 
-    @Parameter(property = PARAM_REFLECT_CONFIG_JSON_OUTPUT_PATH, required = false )
-    @Getter @Setter
-    private String reflectConfigJsonOutputPath;
-
-    @Parameter(property = PARAM_WARN_ON_ERROR, required = false )
-    @Getter @Setter
-    private boolean warnOnError;
 
     @Parameter(defaultValue = "${project}")
     @Getter @Setter
@@ -78,10 +66,10 @@ public class MojoGenerate extends AbstractMojo {
         }
     }
 
-    public void execute() throws MojoExecutionException {
-    	getLog().info( "using parameter "+PARAM_NATIVE_HELPER_CONFIG_PATH+" : "+this.getNativeHelperConfigPath() );
-    	getLog().info( "using parameter "+PARAM_REFLECT_CONFIG_JSON_OUTPUT_PATH+" : "+this.getReflectConfigJsonOutputPath() );
-        try {
+    @Override
+    protected void executeWorker() throws ConfigException {
+        getLog().info( "using parameter "+PARAM_NATIVE_HELPER_CONFIG_PATH+" : "+this.getNativeHelperConfigPath() );
+        ConfigException.apply( () -> {
             this.setupClassLoader();
             File nativeHelperConfigFile = new File( this.getNativeHelperConfigPath() );
             if ( nativeHelperConfigFile.exists() ) {
@@ -101,14 +89,7 @@ public class MojoGenerate extends AbstractMojo {
             } else {
                 throw new ConfigRuntimeException( String.format( "%s does not exist : %s", PARAM_NATIVE_HELPER_CONFIG_PATH, nativeHelperConfigFile.getCanonicalPath() ) );
             }
-        } catch (Exception | NoClassDefFoundError | ExceptionInInitializerError e) {
-            if ( this.isWarnOnError() ) {
-                getLog().error( "Error generating configuration : "+e, e );
-                getLog().info( "Plugin context : "+this.getPluginContext() );
-            } else {
-                throw new MojoExecutionException( "Error generating code : "+e, e );
-            }
-        }
+        } );
     }
 
 }

@@ -1,0 +1,58 @@
+[ {
+  "name" : "org.fugerit.java.emp.sm.service.ServiceMessage",
+  "fields" : [ ],
+  "methods" : [ {
+    "name" : "<init>",
+    "parameterTypes" : [ ]
+  }, {
+    "name" : "<init>",
+    "parameterTypes" : [ "java.lang.String", "java.lang.String", "java.lang.String" ]
+  }, {
+    "name" : "getClass",
+    "parameterTypes" : [ ]
+  }, {
+    "name" : "getCode",
+    "parameterTypes" : [ ]
+  }, {
+    "name" : "getSeverity",
+    "parameterTypes" : [ ]
+  }, {
+    "name" : "getText",
+    "parameterTypes" : [ ]
+  } ]
+}, {
+  "name" : "org.fugerit.java.emp.sm.service.ServiceResponse",
+  "fields" : [ ],
+  "methods" : [ {
+    "name" : "<init>",
+    "parameterTypes" : [ ]
+  }, {
+    "name" : "getClass",
+    "parameterTypes" : [ ]
+  }, {
+    "name" : "getErrors",
+    "parameterTypes" : [ ]
+  }, {
+    "name" : "getInfos",
+    "parameterTypes" : [ ]
+  }, {
+    "name" : "getSuccess",
+    "parameterTypes" : [ ]
+  }, {
+    "name" : "getWarnings",
+    "parameterTypes" : [ ]
+  } ]
+}, {
+  "name" : "org.fugerit.java.emp.sm.service.ServiceMessage$Severity",
+  "fields" : [ ],
+  "methods" : [ {
+    "name" : "getClass",
+    "parameterTypes" : [ ]
+  }, {
+    "name" : "getDeclaringClass",
+    "parameterTypes" : [ ]
+  }, {
+    "name" : "getLevel",
+    "parameterTypes" : [ ]
+  } ]
+} ]
