@@ -31,12 +31,14 @@ public abstract class NativeHelperMojoBase extends AbstractMojo {
     @Setter
     private boolean warnOnError;
 
+    protected static final String USING_PARAMETERS = "using parameter %s : %s";
+
     protected abstract void executeWorker() throws ConfigException;
 
     public void execute() throws MojoExecutionException {
-        getLog().info( "using parameter "+PARAM_REFLECT_CONFIG_JSON_OUTPUT_PATH+" : "+this.getReflectConfigJsonOutputPath() );
-        getLog().info( "using parameter "+PARAM_CREATE_PARENT_DIRECTORY+" : "+this.isCreateParentDirectory() );
-        getLog().info( "using parameter "+PARAM_WARN_ON_ERROR+" : "+this.isWarnOnError() );
+        getLog().info( String.format( USING_PARAMETERS, PARAM_REFLECT_CONFIG_JSON_OUTPUT_PATH, this.getReflectConfigJsonOutputPath() ) );
+        getLog().info( String.format( USING_PARAMETERS, PARAM_CREATE_PARENT_DIRECTORY, this.isCreateParentDirectory() ) );
+        getLog().info( String.format( USING_PARAMETERS, PARAM_WARN_ON_ERROR, this.isWarnOnError() ) );
         try {
             if (StringUtils.isNotEmpty( this.getReflectConfigJsonOutputPath() ) ) {
                 File outputFile = new File(this.getReflectConfigJsonOutputPath());

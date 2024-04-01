@@ -40,7 +40,7 @@ public class MojoMerge extends NativeHelperMojoBase {
 
     @Override
     public void executeWorker() throws ConfigException {
-    	getLog().info( "using parameter "+PARAM_REFLECT_CONFIG_JSON_FILES+" : "+this.getReflectConfigJsonFiles() );
+        getLog().info( String.format( USING_PARAMETERS, PARAM_REFLECT_CONFIG_JSON_FILES, this.getReflectConfigJsonFiles() ) );
         ConfigException.apply( () -> {
             List<Entry> entries = new ArrayList<>();
             for ( String currentFileName : this.reflectConfigJsonFiles ) {

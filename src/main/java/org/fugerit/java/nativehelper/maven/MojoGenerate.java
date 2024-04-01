@@ -68,7 +68,7 @@ public class MojoGenerate extends NativeHelperMojoBase {
 
     @Override
     protected void executeWorker() throws ConfigException {
-        getLog().info( "using parameter "+PARAM_NATIVE_HELPER_CONFIG_PATH+" : "+this.getNativeHelperConfigPath() );
+        getLog().info( String.format( USING_PARAMETERS, PARAM_NATIVE_HELPER_CONFIG_PATH, this.getNativeHelperConfigPath() ) );
         ConfigException.apply( () -> {
             this.setupClassLoader();
             File nativeHelperConfigFile = new File( this.getNativeHelperConfigPath() );
