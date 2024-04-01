@@ -27,7 +27,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Mojo( 
-		name = "generate",
+		name = "nativeHelper",
 		threadSafe = true,
 		defaultPhase = LifecyclePhase.PREPARE_PACKAGE,
 		requiresDependencyResolution = ResolutionScope.COMPILE_PLUS_RUNTIME
