@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.3.3] - 2024-04-01
+
+### Changed
+
+- fj-bom version set to 1.6.4
+- [native-helper-graalvm](https://github.com/fugerit-org/native-helper-graalvm/) version set to 1.3.3
+
 ## [1.3.2] - 2024-04-01
 
 ### Added
