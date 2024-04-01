@@ -14,6 +14,9 @@ Maven plugin with helper methods for generating native configuration
 [![Apache Maven](https://img.shields.io/badge/Apache%20Maven-3.9.0+-C71A36?style=for-the-badge&logo=Apache%20Maven&logoColor=white)](https://universe.fugerit.org/src/docs/versions/maven3_9.html)
 [![Fugerit Github Project Conventions](https://img.shields.io/badge/Fugerit%20Org-Project%20Conventions-1A36C7?style=for-the-badge&logo=Onlinect%20Playground&logoColor=white)](https://universe.fugerit.org/src/docs/conventions/index.html)
 
+This maven plugin allows generation of [graalvm](https://www.graalvm.org/) metadata 
+using the [native-helper-graalvm](https://github.com/fugerit-org/native-helper-graalvm)
+
 ## Quickstart
 
 Write a *native-helper-config.yaml* configuration file for the project.
