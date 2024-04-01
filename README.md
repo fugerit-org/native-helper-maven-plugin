@@ -40,7 +40,7 @@ Add the plugin to your maven project :
     </executions>
     <configuration>
         <nativeHelperConfigPath>src/main/config/native-helper-config.yaml</nativeHelperConfigPath>
-        <reflectConfigJsonOutputPath>${project.basedir}/src/main/resources/META-INF/native-image/reflect-config.json</reflectConfigJsonOutputPath>
+        <reflectConfigJsonOutputPath>${project.build.outputDirectory}/META-INF/native-image/reflect-config.json</reflectConfigJsonOutputPath>
         <warnOnError>false</warnOnError>
     </configuration>
 </plugin>
