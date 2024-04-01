@@ -2,7 +2,7 @@ package test.helper.generation;
 
 
 import lombok.extern.slf4j.Slf4j;
-import org.fugerit.java.nativehelper.tool.AccessingAllClassesInPackage;
+import org.fugerit.java.nhg.config.AccessingAllClassesInPackage;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -18,8 +18,7 @@ class TestNative {
 	@Test
 	void testReflectConfig() {
 		try {
-			AccessingAllClassesInPackage helper = new AccessingAllClassesInPackage();
-			Set<Class<?>> set = helper.findAllClassesUsingClassLoader( "test.helper.generation.model" );
+			Set<Class<?>> set = AccessingAllClassesInPackage.findAllClassesUsingClassLoader( "test.helper.generation.model" );
 			List<String> classNames = set.stream().map( s -> s.getName() ).sorted().collect( Collectors.toList() );
 			log.info( "classNames {}", classNames );
 			StringBuilder sb = new StringBuilder();
