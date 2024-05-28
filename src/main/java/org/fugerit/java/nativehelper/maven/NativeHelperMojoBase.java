@@ -49,10 +49,11 @@ public abstract class NativeHelperMojoBase extends AbstractMojo {
             this.executeWorker();
         } catch (Exception | NoClassDefFoundError | ExceptionInInitializerError e) {
             if ( this.isWarnOnError() ) {
-                getLog().error( "Error generating configuration : "+e, e );
-                getLog().info( "Plugin context : "+this.getPluginContext() );
+                getLog().error(  String.format( "Error generating configuration : %s", e.getMessage() ), e );
+                getLog().info( String.format( "Plugin context : %s", this.getPluginContext() ) );
             } else {
-                throw new MojoExecutionException( "Error generating code : "+e, e );
+                getLog().error(  String.format( "Error generating configuration : %s", e.getMessage() ), e );
+                throw new MojoExecutionException( String.format( "Error generating code : %s", e.toString() ), e );
             }
         }
     }

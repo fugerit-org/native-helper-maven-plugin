@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.4.4] - 2024-05-28
+
+### Changed
+
+- error log handling (print stack trace)
+
+### Fixed
+
+- native-helper-graalvm set to 1.4.4
+
 ## [1.4.2] - 2024-05-28
 
 ### Fixed
