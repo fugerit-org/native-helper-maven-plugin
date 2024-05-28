@@ -20,7 +20,7 @@
 
 	<properties>
 		<maven.compiler.release>11</maven.compiler.release>
-		<fj-core-version>8.5.3</fj-core-version>
+		<fj-core-version>8.6.2</fj-core-version>
 		<native-helper-graalvm-version>${project.version}</native-helper-graalvm-version>
 		<maven-core-version>3.9.6</maven-core-version>
 	</properties>
