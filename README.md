@@ -37,7 +37,7 @@ Write a *native-helper-config.yaml* configuration file for the project.
             <configuration>
                 <nativeHelperConfigPath>src/main/config/native-helper-config.yaml</nativeHelperConfigPath>
                 <reflectConfigJsonOutputPath>${project.build.directory}/generated-resources/reflect-config-demo.json</reflectConfigJsonOutputPath>
-                <warnOnError>true</warnOnError>
+                <warnOnError>false</warnOnError>
             </configuration>
         </execution>
     </executions>
