@@ -35,7 +35,8 @@ Write a *native-helper-config.yaml* configuration file for the project.
                 <goal>generate</goal>
             </goals>
             <configuration>
-                <nativeHelperConfigPath>src/main/config/native-helper-config.yaml</nativeHelperConfigPath>
+                <createParentDirectory>true</createParentDirectory>
+                <nativeHelperConfigPath>${project.basedir}/src/main/config/native-helper-config.yaml</nativeHelperConfigPath>
                 <reflectConfigJsonOutputPath>${project.build.directory}/generated-resources/reflect-config-demo.json</reflectConfigJsonOutputPath>
                 <warnOnError>false</warnOnError>
             </configuration>
